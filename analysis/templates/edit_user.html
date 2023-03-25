@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{%load static%}
+
+{% block titlecontent %}Edit User{%endblock%}
+{%block link%}
+<link href="{% static 'vendor/mdi-font/css/material-design-iconic-font.min.css'%}" rel="stylesheet" media="all">
+<link href="{% static 'vendor/font-awesome-4.7/css/font-awesome.min.css'%}" rel="stylesheet" media="all">
+<!-- Font special for pages-->
+
+
+<!-- Vendor CSS-->
+<link href="{% static 'vendor/select2/select2.min.css'%}"rel="stylesheet" media="all">
+
+<!-- Main CSS-->
+<link href="{% static   'css/user_register.css'%}" rel="stylesheet" media="all">
+{%endblock%}
+{%block contain%}  
+
+<div class="page-wrapper  p-t-100 p-b-100 font-poppins">
+    
+    <div class="wrapper wrapper--w680">
+        <div class="card card-4">
+            <div class="card-body">
+                
+                <h2 class="title">Edit Form</h2>
+                <form method="POST">
+                    {%csrf_token%}
+                    <div class="row row-space">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <label class="label">first name</label>
+                                <input class="input--style-4" type="text" value="{{user_data.first_name}}" style=" cursor: not-allowed;" title="Click on update after you can edit" name="first_name" id='firstname' readonly >
+                                <label style="color: red;" id='firstname_val'></label>   
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <label class="label">last name</label>
+                                <input class="input--style-4" type="text" value="{{user_data.last_name}}" style=" cursor: not-allowed;" title="Click on update after you can edit" name="last_name" id='lastname' readonly>
+                                <label style="color: red;" id='lastname_val'></label> 
+                            </div>
+                        </div>
+                    </div>
+                   <div class="row row-space">
+                        <div class="col-6">
+                            <div class="input-group">
+                                <label class="label">Username</label>
+                                <input class="input--style-4" type="text" value="{{user_data.username}}" style=" cursor: not-allowed;" title="Click on update after you can edit" name="username" id='username' readonly>
+                                <label style="color: red;" id='username_val'></label> 
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="input-group">
+                                <label class="label">Email</label>
+                                <input class="input--style-4" type="email" value="{{user_data.email}}" style=" cursor: not-allowed;" title="Click on update after you can edit" name="email" id="email" readonly>
+                                <label style="color: red;" id='email_val'></label> 
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row row-space">
+                        <div class="col-12">
+                    
+                                <label class="label">User Role</label>
+        
+                           
+                        </div>
+                        <div class="col-12">
+                        <div class="align-self-start ">
+                
+                                <select name="choice" style="height: 50px; width: 100%; border-radius:4px ;background-color: white; border-color: lightgrey; cursor: not-allowed;"  title="Click on update after you can edit"  id='choice'disabled="disabled">
+                                    <option value="admin" {% if user_data.is_superuser == True %}selected{% endif %}>Admin</option>
+                                    <option value="staff" {% if user_data.is_superuser == False %}selected{% endif %}>Staff</option>
+                                </select>
+                            
+                        </div>
+                        </div>
+                    </div>
+                    <div class="p-t-15 mt-2" id="edit_div">
+                        <a class="btn btn--radius-2 btn--blue" id="edit">Update</a>
+                    </div>
+                    {% for message in messages %}
+                        {% if message.tags == 'success' %}
+                            <div class="alert alert-success  mt-3" role="alert">
+                            {{message}}
+                            </div>
+                        
+                        {%else%}
+                            <div class="alert alert-danger  mt-3" role="alert">
+                            {{message}}
+                            </div>    
+                        {%endif%}
+                    {%endfor%}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{%endblock%}
+{%block script%}
+    <script defer src="{%static 'js/edit_user_form.js'%}"></script>
+{%endblock%}

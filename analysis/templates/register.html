@@ -1,0 +1,80 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="{%static 'css/style.css'%}" rel="stylesheet" >
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@7.12.15/dist/sweetalert2.min.css'>
+    <title>Register</title>
+  </head>
+  <body>
+    <section class="vh-100 ">
+  <div class="mask d-flex align-items-center h-100 " >
+
+    <div class="container h-100" >
+      <div class="row d-flex justify-content-center align-items-center h-100" >
+        <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+          <div class="card" style="border:2px solid rgba(50, 115, 220, 0.3); box-shadow: 0 0 10px 5px;  border-radius: 25px 25px;">
+            <div class="card-body p-5">
+             <h2 class="text-uppercase text-center mb-5">Register Here</h2>
+        
+              <form method="post">
+                {%csrf_token%}
+                <div class="form-outline mb-4">
+                  <input type="text" id="name" name='name'class="form-control form-control-lg" placeholder="Enter The Name" />
+                  <label class="form-label " style="padding-top: 1.5%; color: red;" id='name_val'for="form3Example1cg"></label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="email" id="email" name='email'class="form-control form-control-lg" placeholder="Enter The Email"  />
+                  <label class="form-label" style="padding-top: 1.5%; color: red;" id='email_val' for="form3Example3cg"></label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="text" id="experience" name="experience" class="form-control form-control-lg" placeholder="Enter The Experience"  />
+                  <label class="form-label" style="padding-top: 1.5%; color: red;" id='experience_val' for="form3Example4cg"></label>
+                </div>
+
+                <div class="form-outline mb-4">
+                  <input type="text" id="position" name="position" class="form-control form-control-lg" placeholder="Enter The Position / Role"/>
+                  <label class="form-label" style="padding-top: 1.5%;color: red;" id="position_val" for="form3Example4cdg"></label>
+                </div>
+
+                
+                  
+                <button type="submit" class="btn btn-success" id="save_btn"style="margin-top: 3%; width: 100%; height: 50px;">Show Question</button>    
+                
+
+              </form>
+                {% for message in messages %}
+                    {% if message.tags == 'info' %}
+                        <h4 style="padding-top: 5%;" >
+                            <font style="color:red;">{{message}}</font>
+                        </h4>
+                    {%endif%}
+                {%endfor%}
+                
+            
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+  <script src="{% static 'js/jquery.js'%}"></script>
+
+  <script src="{% static 'js/register.js'%}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+    
+  </body>
+</html>
+
+

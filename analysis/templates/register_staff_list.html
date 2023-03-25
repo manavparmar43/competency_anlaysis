@@ -1,0 +1,203 @@
+{%extends 'base.html'%}
+
+{% block titlecontent %}Register Staff List{%endblock%}
+
+{% block contain%}
+<h1>Register Staff</h1>
+<hr>
+<form method="POST">
+  {%csrf_token%}
+      <div class="input-group">
+        {%if request.user.is_superuser%}
+        <select id="pet-select" name="filter" onchange="deletedata(this.value)" style="width: auto  ; height: 39px; border-radius: 4px; background-color: white ;">
+          <option value="filter">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filter / Delete Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="firstname">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="lastname">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="username">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="email">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="delete" style="color:red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete All Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+        </select>
+        {%else%}
+          <select id="pet-select" name="filter" style="width: auto  ; height: 39px; border-radius: 4px; background-color: white ;">
+            <option value="filter">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filter&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+            <option value="firstname">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;First Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+            <option value="lastname">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Last Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+            <option value="username">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;User Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+            <option value="email">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          </select>
+        {%endif%}&nbsp;&nbsp;
+        <div class="row" id="searchdiv">
+          <div class="col-9">
+            <input type="text" style="width: auto;" class="form-control rounded" name="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          </div>
+          <div class="row " >
+            <div class="col-9 ">
+              <button  type="submit" style="width: auto;"class="btn btn-outline-primary">search</button>
+            </div>
+          </div> 
+        
+        </div>
+      
+      </div>
+      {% for message in messages %}
+          {% if message.tags == 'info' %}
+            <center><h4 style="padding-top: 1%; color: red;">{{message}}</h4></center>
+          {%else%}
+            <center><h4 style="padding-top: 1%; color: green;">{{message}}</h4></center>
+          {%endif%}
+      {%endfor%}
+</form>
+
+
+<div  style="    width:100%;  scrollbar-width: auto; overflow-y: scroll;">
+<table class="table mt-4">
+    <thead>
+      <tr>
+        <th class="text-center" scope="col">No</th>
+        <th class="text-center"  scope="col">First Name</th>
+        <th class="text-center"  scope="col">Last Name</th>
+        <th class="text-center"  scope="col">Username</th>
+        <th class="text-center"  scope="col">Email</th>
+        {%if request.user.is_superuser%}
+          <th  class="text-center"  scope="col">Action</th>
+        {%endif%}
+      </tr>
+    </thead>
+    <tbody>
+      {%if request.user.is_superuser%}
+          {%if filter_data%}
+            {%for staff in filter_data%}
+                <tr>
+                  <th class="text-center"  scope="row">{{forloop.counter}}</th>
+                  <td class="text-center" >{{staff.first_name}}</td>
+                  <td class="text-center" >{{staff.last_name}}</td>
+                  <td class="text-center" >{{staff.username}}</td>
+                  <td class="text-center" >{{staff.email}}</td>
+                  <td class="text-center" ><a type="button" href="{%url 'edit-user' staff.id%}"class="btn btn-success">Update</a>&nbsp;&nbsp;&nbsp;
+                    <a type="button" class="btn btn-danger" onclick='deleteuser({{staff.id}})'>Delete</a></td>
+                </tr>
+              {%endfor%}
+          {%else%}
+            {%for staff in staff_data%}
+              <tr>
+                <th class="text-center"  scope="row">{{forloop.counter}}</th>
+                <td class="text-center" >{{staff.first_name}}</td>
+                <td class="text-center" >{{staff.last_name}}</td>
+                <td class="text-center" >{{staff.username}}</td>
+                <td class="text-center" >{{staff.email}}</td>
+                <td class="text-center" ><a type="button" href="{%url 'edit-user' staff.id%}"class="btn btn-success">Update</a>&nbsp;&nbsp;&nbsp;
+                  <a type="button" class="btn btn-danger" onclick='deleteuser({{staff.id}})'>Delete</a></td>
+              </tr>
+            {%endfor%}
+          {%endif%}  
+
+      {%else%}
+          {%if filter_data%}
+              {%for staff in filter_data%}
+                  <tr>
+                    <th class="text-center"  scope="row">{{forloop.counter}}</th>
+                    <td class="text-center" >{{staff.first_name}}</td>
+                    <td class="text-center" >{{staff.last_name}}</td>
+                    <td class="text-center" >{{staff.username}}</td>
+                    <td class="text-center" >{{staff.email}}</td>
+                  </tr>
+            {%endfor%}
+          {%else%}
+            {%for staff in staff_data%}
+              <tr>
+                <th class="text-center"  scope="row">{{forloop.counter}}</th>
+                <td class="text-center" >{{staff.first_name}}</td>
+                <td class="text-center" >{{staff.last_name}}</td>
+                <td class="text-center" >{{staff.username}}</td>
+                <td class="text-center" >{{staff.email}}</td>
+              </tr>
+            {%endfor%}
+          {%endif%}
+      {%endif%}
+
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block scriptcontain%}
+function deleteuser(val) {
+  swal({
+      title: "Staff user will be deleted permanently!",
+      text: "Are you sure to proceed?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Remove Profile!",
+      cancelButtonText: "I am not sure!",
+  })
+      .then(isConfirm => {
+          if (isConfirm.value) {
+              $.ajax({
+              url: '/delete-staff/'+val+'/',
+              success: function (data) {
+                  swal("Profile Removed!", "User is removed permanently!", "success");
+                  setTimeout(function() {
+                  window.location.href= "/staff-list/";
+                  }, 3000);
+
+              }
+
+              });
+
+          }
+          else {
+                  swal("Oops", "Profile is not removed!", "error");
+                  setTimeout(function() {
+                  window.location.href= " /staff-list/";
+                  }, 2000);
+
+          }
+      }) 
+ 
+}
+function deletedata(val){
+  if (val == 'delete')
+  {
+    $('#searchdiv').html("");
+    $('#searchdiv').append(`
+    &nbsp;&nbsp;&nbsp;<a   onclick="delete_staff_all_data()"class="btn btn-outline-danger">Delete</a>`);
+    
+  }
+  else{
+    $('#searchdiv').html("");
+    $('#searchdiv').append(`<div class="col-9">
+      <input type="text" class="form-control rounded" name="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    </div>
+    <button  type="submit"class="btn btn-outline-primary">search</button>`);
+
+    
+
+  }
+
+}
+function delete_staff_all_data(){
+  Swal.fire({
+    title: 'Do you want to delete all data?',
+    showDenyButton: true,
+    confirmButtonText: 'Delete',
+    denyButtonText: `Don't Delete`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '/delete-all-staff/',
+        success: function (data) {
+            swal('Deleted!', '', 'success')
+            setTimeout(function() {
+            window.location.href= "/staff-list/";
+            }, 3000);
+
+        }
+      });
+     
+    } else if (result.isDenied) {
+      swal('Data not delete', '', 'info')
+    }
+  })
+
+}
+{%endblock%}

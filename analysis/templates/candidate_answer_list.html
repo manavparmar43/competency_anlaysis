@@ -1,0 +1,155 @@
+{%extends 'base.html'%}
+
+{% block titlecontent %}Candidate Answer List{%endblock%}
+{%block contain%}
+<h1>Register Staff</h1>
+<hr>
+<form method="POST">
+  {%csrf_token%}
+      <div class="input-group">
+        
+        <select id="pet-select" name="filter" onchange="deletedata(this.value)"style="width: auto  ; height: 39px; border-radius: 4px; background-color: white ;">
+          <option value="filter">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Filter / Delete Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="email">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="style">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Style&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+          <option value="delete" style="color: red;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Delete All Data&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</option>
+
+        </select>&nbsp;&nbsp;
+        <div class="row" id="searchdiv">
+          <div class="col-9">
+            <input type="text" class="form-control rounded" name="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+          </div>
+          <button  type="submit"class="btn btn-outline-primary">search</button>
+        
+        </div>
+      
+      </div>
+      {% for message in messages %}
+          {% if message.tags == 'info' %}
+            <center><h4 style="padding-top: 1%; color: red;">{{message}}</h4></center>
+          {%else%}
+            <center><h4 style="padding-top: 1%; color: green;">{{message}}</h4></center>
+          {%endif%}
+      {%endfor%}
+</form>
+<div  style="    width:100%;  scrollbar-width: auto; overflow-y: scroll;">
+<table class="table mt-4">
+    <thead>
+      <tr>
+        <th class="text-center" scope="col">No</th>
+        <th class="text-center"  scope="col">User</th>
+        <th class="text-center"  scope="col">AnswerSheet</th>
+        <th class="text-center"  scope="col">Style</th>
+        <th class="text-center"  scope="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {%if filter_data%}
+          {%for data in filter_data%}
+            <tr>
+              <th class="text-center"  scope="row">{{forloop.counter}}</th>
+              <td class="text-center" >{{data.user}}</td>
+              <td class="text-center" >{{data.answer_key}}</td>
+              <td class="text-center" >{{data.style}}</td>
+              <td class="text-center" >
+                <a type="button" class="btn btn-danger" onclick='deleteuser({{data.id}})'>Delete</a></td>
+            </tr>
+          {%endfor%}
+      {%else%}
+            {%for data in user_ans%}
+              <tr>
+                <th class="text-center"  scope="row">{{forloop.counter}}</th>
+                <td class="text-center" >{{data.user}}</td>
+                <td class="text-center" >{{data.answer_key}}</td>
+                <td class="text-center" >{{data.style}}</td>
+                <td class="text-center" >
+                  <a type="button" class="btn btn-danger" onclick='deleteuser({{data.id}})'>Delete</a></td>
+              </tr>
+            {%endfor%}
+      {%endif%}
+    </tbody>
+  </table>
+</div>
+{%endblock%}
+{%block scriptcontain%}
+function deleteuser(val) {
+  swal({
+      title: "Candidate AnswerSheet data will be deleted permanently!",
+      text: "Are you sure to proceed?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "Remove Profile!",
+      cancelButtonText: "I am not sure!",
+  })
+      .then(isConfirm => {
+          if (isConfirm.value) {
+              $.ajax({
+              url: '/candidate-answersheet-delete/'+val+'/',
+              success: function (data) {
+                  swal("Profile Removed!", "Candidate AnswerSheet data is removed permanently!", "success");
+                  setTimeout(function() {
+                  window.location.href= "/candidate-answersheet-list/";
+                  }, 3000);
+
+              }
+
+              });
+
+          }
+          else {
+                  swal("Oops", "Candidate AnswerSheet data is not removed!", "error");
+                  setTimeout(function() {
+                  window.location.href= " /candidate-answersheet-list/";
+                  }, 2000);
+
+          }
+      }) 
+ 
+}
+function deletedata(val){
+  if (val == 'delete')
+  {
+    $('#searchdiv').html("");
+    $('#searchdiv').append(`
+    &nbsp;&nbsp;&nbsp;<a   onclick="delete_answer_all_data()"class="btn btn-outline-danger">Delete</a>`);
+    
+  }
+  else{
+    $('#searchdiv').html("");
+    $('#searchdiv').append(`<div class="col-9">
+      <input type="text" class="form-control rounded" name="search" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    </div>
+    <button  type="submit"class="btn btn-outline-primary">search</button>`);
+
+    
+
+  }
+
+}
+function delete_answer_all_data(){
+  Swal.fire({
+    title: 'Do you want to delete all data?',
+    showDenyButton: true,
+    confirmButtonText: 'Delete',
+    denyButtonText: `Don't Delete`,
+  }).then((result) => {
+    if (result.isConfirmed) {
+      $.ajax({
+        url: '/delete-answersheet-all-data/',
+        success: function (data) {
+            swal('Deleted!', '', 'success')
+            setTimeout(function() {
+            window.location.href= "/candidate-answersheet-list/";
+            }, 3000);
+
+        }
+      });
+     
+    } else if (result.isDenied) {
+      swal('Data not delete', '', 'info')
+    }
+  })
+
+}
+{%endblock%}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <title>Submitted</title>
+  </head>
+  <body>
+    <div class="w-100 " style="height: auto; margin-top:25vh;">
+    <div class="w-50 m-auto " style="border:3px solid rgba(50, 115, 220, 0.3); box-shadow: 0 0 10px 5px;  border-radius: 25px 4px; height: auto;">
+        <center><h1 style="padding-top: 2%; color: green;">Your Answer Submitted 	&#128077; </h1></center>
+        <h1 style="padding-left: 2%; padding-top: 2%;">1) Name: {{name}} </h1> 
+        <h1 style="padding-left: 2%; padding-top: 2%;">2) Position: {{position}}</h1>
+        <h1 style="padding-left: 2%; padding-top: 2%;">3) Submitted Answer: {{ans}}</h1>
+        <h1 style="padding-left: 2%; padding-top: 2%;">4) Style: {{style}}</h1><br>
+        <br><h1 style="padding-left: 2%;  padding-bottom: 2%; width: 50%; height: 100; ">5) Style-1: {{style1}}</h1>
+        <h1 style="padding-left: 2%;  padding-bottom: 2%; width: 50%; height: 100;">6) Style-2: {{style2}}</h1>
+        <h1 style="padding-left: 2%;  padding-bottom: 2%; width: 50%; height: 100;">7) Style-3: {{style3}}</h1>
+        <h1 style="padding-left: 2%;  padding-bottom: 2%; width: 50%; height: 100;">8) Style-4: {{style4}}</h1>
+    </div></div><br><br><br>
+    <center><a type="button " style="width: 10%;" href="{%url 'register'%}" class="btn btn-danger"><label style="font-size: 30px;">Back</label></a></center>    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+  </body>
+</html>
